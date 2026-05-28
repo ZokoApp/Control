@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2563eb">
+
+<head>
+<meta charset="UTF-8" />
+
+<meta
+  name="viewport"
+  content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+/>
+
+<title>Control de Choferes</title>
+
+<script src="https://cdn.tailwindcss.com"></script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+  rel="stylesheet"
+/>
+
+<style>
+
+*{
+  font-family:'Inter',sans-serif;
+}
+
+body{
+  background:
+  radial-gradient(circle at top left,#1e293b 0%,#0f172a 40%,#020617 100%);
+  min-height:100vh;
+  color:white;
+  overflow-x:hidden;
+}
+
+.glass{
+  background:rgba(255,255,255,0.06);
+  backdrop-filter:blur(18px);
+
+  border:1px solid rgba(255,255,255,0.08);
+
+  box-shadow:
+  0 10px 30px rgba(0,0,0,0.35);
+}
+
+.card-hover{
+  transition:.25s ease;
+}
+
+.card-hover:hover{
+  transform:translateY(-3px);
+  border-color:rgba(255,255,255,0.15);
+}
+
+.btn-main{
+  background:linear-gradient(135deg,#3b82f6,#2563eb);
+  transition:.2s ease;
+}
+
+.btn-main:hover{
+  transform:scale(1.02);
+}
+
+.glow{
+  box-shadow:
+  0 0 30px rgba(59,130,246,0.35);
+}
+
+.animate-fade{
+  animation:fade .2s ease;
+}
+
+@keyframes fade{
+  from{
+    opacity:0;
+    transform:scale(.96);
+  }
+
+  to{
+    opacity:1;
+    transform:scale(1);
+  }
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator{
+  filter:invert(1);
+  cursor:pointer;
+}
+
+select{
+  appearance:none;
+}
+
+.search-input{
+  background:rgba(15,23,42,.8);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.search-input:focus{
+  border-color:#3b82f6;
+  outline:none;
+}
+
+.driver-item{
+  transition:.2s ease;
+}
+
+.driver-item:hover{
+  background:rgba(255,255,255,.04);
+}
+
+</style>
+</head>
+
+<body class="p-5">
+
+<div class="max-w-7xl mx-auto">
+
+  <!-- HEADER -->
+  <header class="flex items-center justify-between mb-8">
+
+    <div>
+
+      <h1 class="text-3xl font-extrabold tracking-tight">
+        Control de Choferes
+      </h1>
+
+      <p class="text-slate-400 mt-1">
+        Sistema inteligente de rotación
+      </p>
+
+    </div>
+
+    <button
+      id="openModal"
+      class="btn-main glow px-5 py-3 rounded-2xl font-semibold"
+    >
+      + Nuevo Domingo
+    </button>
+
+  </header>
+
+  <div class="grid grid-cols-1 xl:grid-cols-4 gap-6">
+
+    <!-- IZQUIERDA -->
+    <div class="xl:col-span-3 space-y-6">
+
+      <!-- RECOMENDADOS -->
+      <section class="glass rounded-3xl p-6">
+
+        <div class="flex items-center justify-between mb-6">
+
+          <div>
+
+            <h2 class="text-2xl font-bold">
+              Recomendados
+            </h2>
+
+            <p class="text-slate-400 text-sm mt-1">
+              Próximo domingo
+            </p>
+
+          </div>
+
+          <div
+            class="bg-blue-500/20 text-blue-300 px-4 py-2 rounded-xl text-sm font-medium"
+          >
+            Inteligencia activa
+          </div>
+
+        </div>
+
+        <div
+          id="recommendations"
+          class="grid md:grid-cols-2 gap-5"
+        ></div>
+
+      </section>
+
+      <!-- CHOFERES -->
+      <section class="glass rounded-3xl p-6">
+
+        <div class="flex items-center justify-between mb-6 gap-4 flex-wrap">
+
+          <div>
+
+            <h2 class="text-2xl font-bold">
+              Choferes
+            </h2>
+
+            <p class="text-slate-400 text-sm mt-1">
+              Estadísticas generales
+            </p>
+
+          </div>
+
+          <div class="w-full md:w-80">
+
+            <input
+              id="searchDriver"
+              type="text"
+              placeholder="Buscar chofer o ID..."
+              class="search-input w-full rounded-2xl px-4 py-4"
+            >
+
+          </div>
+
+        </div>
+
+        <div
+          id="driversGrid"
+          class="grid md:grid-cols-2 xl:grid-cols-3 gap-5"
+        ></div>
+
+      </section>
+
+      <!-- HISTORIAL -->
+      <section class="glass rounded-3xl p-6">
+
+        <div class="flex items-center justify-between mb-6">
+
+          <div>
+
+            <h2 class="text-2xl font-bold">
+              Historial
+            </h2>
+
+            <p class="text-slate-400 text-sm mt-1">
+              Últimos domingos registrados
+            </p>
+
+          </div>
+
+        </div>
+
+        <div
+          id="historyList"
+          class="space-y-4"
+        ></div>
+
+      </section>
+
+    </div>
+
+    <!-- DERECHA -->
+    <div class="space-y-6">
+
+      <!-- ALERTAS -->
+      <section class="glass rounded-3xl p-6">
+
+        <h2 class="text-2xl font-bold mb-5">
+          Alertas
+        </h2>
+
+        <div
+          id="alertsList"
+          class="space-y-4"
+        ></div>
+
+      </section>
+
+      <!-- MÉTRICAS -->
+      <section class="glass rounded-3xl p-6">
+
+        <h2 class="text-2xl font-bold mb-5">
+          Métricas
+        </h2>
+
+        <div class="space-y-5">
+
+          <div>
+
+            <p class="text-slate-400 text-sm">
+              Total de choferes
+            </p>
+
+            <h3
+              id="totalDrivers"
+              class="text-3xl font-extrabold mt-1"
+            >
+              0
+            </h3>
+
+          </div>
+
+          <div>
+
+            <p class="text-slate-400 text-sm">
+              Domingos registrados
+            </p>
+
+            <h3
+              id="totalSundays"
+              class="text-3xl font-extrabold mt-1"
+            >
+              0
+            </h3>
+
+          </div>
+
+          <div>
+
+            <p class="text-slate-400 text-sm">
+              Horas acumuladas
+            </p>
+
+            <h3
+              id="totalHours"
+              class="text-3xl font-extrabold mt-1"
+            >
+              0h
+            </h3>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- MODAL -->
+<div
+  id="modal"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm hidden items-center justify-center z-50 p-4"
+>
+
+  <div
+    class="glass w-full max-w-lg rounded-3xl p-6 animate-fade"
+  >
+
+    <div class="flex items-center justify-between mb-6">
+
+      <div>
+
+        <h2 class="text-2xl font-bold">
+          Nuevo Domingo
+        </h2>
+
+        <p class="text-slate-400 text-sm mt-1">
+          Registrar choferes
+        </p>
+
+      </div>
+
+      <button
+        id="closeModal"
+        class="w-10 h-10 rounded-xl bg-white/10 hover:bg-white/20 transition"
+      >
+        ✕
+      </button>
+
+    </div>
+
+    <div class="space-y-5">
+
+      <!-- FECHA -->
+      <div>
+
+        <label class="text-sm text-slate-400 block mb-2">
+          Fecha
+        </label>
+
+        <input
+          id="dateInput"
+          type="date"
+          class="w-full bg-slate-900/70 border border-white/10 rounded-2xl px-4 py-4 outline-none focus:border-blue-500 transition"
+        >
+
+      </div>
+
+      <!-- CHOFER 1 -->
+      <div>
+
+        <label class="text-sm text-slate-400 block mb-2">
+          Chofer 1
+        </label>
+
+        <select
+          id="driver1"
+          class="w-full bg-slate-900/70 border border-white/10 rounded-2xl px-4 py-4"
+        >
+        </select>
+
+      </div>
+
+      <!-- CHOFER 2 -->
+      <div>
+
+        <label class="text-sm text-slate-400 block mb-2">
+          Chofer 2
+        </label>
+
+        <select
+          id="driver2"
+          class="w-full bg-slate-900/70 border border-white/10 rounded-2xl px-4 py-4"
+        >
+        </select>
+
+      </div>
+
+      <button
+        id="saveSunday"
+        class="w-full btn-main py-4 rounded-2xl font-bold text-lg mt-3"
+      >
+        Guardar Domingo
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+
+let drivers =
+JSON.parse(localStorage.getItem("drivers")) || [
+
+  { id:1545, name:"NOVELLI EDUARDO" },
+  { id:1869, name:"ROJO LAUTARO" },
+  { id:1878, name:"CARPIO PEDRO LUIS" },
+  { id:1665, name:"MACHADO CRISTIAN" },
+  { id:1210, name:"ARAGON JORGE SAMUEL" },
+  { id:1772, name:"FIANT MARCELO RICARDO" },
+  { id:1738, name:"YEGROS MAXIMILIANO" },
+  { id:1937, name:"FERREYRA CRISTIAN NICOLAS" },
+  { id:1842, name:"OVIEDO WALTER DANIEL" }
+
+];
+
+let sundays =
+JSON.parse(localStorage.getItem("sundays")) || [];
+
+const modal = document.getElementById("modal");
+const openModal = document.getElementById("openModal");
+const closeModal = document.getElementById("closeModal");
+
+const dateInput = document.getElementById("dateInput");
+const driver1 = document.getElementById("driver1");
+const driver2 = document.getElementById("driver2");
+
+const saveSunday =
+document.getElementById("saveSunday");
+
+const historyList =
+document.getElementById("historyList");
+
+const driversGrid =
+document.getElementById("driversGrid");
+
+const recommendations =
+document.getElementById("recommendations");
+
+const alertsList =
+document.getElementById("alertsList");
+
+const totalDrivers =
+document.getElementById("totalDrivers");
+
+const totalSundays =
+document.getElementById("totalSundays");
+
+const totalHours =
+document.getElementById("totalHours");
+
+const searchDriver =
+document.getElementById("searchDriver");
+
+populateSelects();
+renderAll();
+
+searchDriver.addEventListener("input",()=>{
+
+  renderStats(searchDriver.value);
+
+});
+
+function populateSelects(){
+
+  driver1.innerHTML =
+  `<option value="">Seleccionar chofer</option>`;
+
+  driver2.innerHTML =
+  `<option value="">Seleccionar chofer</option>`;
+
+  drivers.forEach(driver => {
+
+    driver1.innerHTML += `
+      <option value="${driver.id}">
+        ${driver.id} - ${driver.name}
+      </option>
+    `;
+
+    driver2.innerHTML += `
+      <option value="${driver.id}">
+        ${driver.id} - ${driver.name}
+      </option>
+    `;
+
+  });
+
+}
+
+openModal.addEventListener("click", () => {
+
+  modal.classList.remove("hidden");
+  modal.classList.add("flex");
+
+});
+
+closeModal.addEventListener("click", closeModalFunction);
+
+window.addEventListener("click",(e)=>{
+
+  if(e.target === modal){
+    closeModalFunction();
+  }
+
+});
+
+function closeModalFunction(){
+
+  modal.classList.add("hidden");
+  modal.classList.remove("flex");
+
+}
+
+saveSunday.addEventListener(
+  "click",
+  saveNewSunday
+);
+
+function saveNewSunday(){
+
+  const date = dateInput.value;
+  const chofer1 = driver1.value;
+  const chofer2 = driver2.value;
+
+  if(!date || !chofer1 || !chofer2){
+    alert("Completá todos los campos");
+    return;
+  }
+
+  if(chofer1 === chofer2){
+    alert("No podés repetir chofer");
+    return;
+  }
+
+  const exists =
+  sundays.find(s => s.date === date);
+
+  if(exists){
+    alert("Ese domingo ya existe");
+    return;
+  }
+
+  sundays.push({
+    date,
+    drivers:[
+      Number(chofer1),
+      Number(chofer2)
+    ]
+  });
+
+  sundays.sort(
+    (a,b)=>new Date(b.date)-new Date(a.date)
+  );
+
+  localStorage.setItem(
+    "sundays",
+    JSON.stringify(sundays)
+  );
+
+  renderAll();
+
+  closeModalFunction();
+
+  dateInput.value = "";
+  driver1.value = "";
+  driver2.value = "";
+
+}
+
+function renderAll(){
+
+  renderHistory();
+  renderStats();
+  renderRecommendations();
+  renderAlerts();
+
+}
+
+function renderHistory(){
+
+  historyList.innerHTML = "";
+
+  if(sundays.length === 0){
+
+    historyList.innerHTML = `
+      <div
+        class="glass rounded-2xl p-8 text-center text-slate-400"
+      >
+        No hay domingos cargados todavía
+      </div>
+    `;
+
+    return;
+  }
+
+  sundays.forEach((item,index) => {
+
+    const names =
+    item.drivers.map(driverId => {
+
+      const found =
+      drivers.find(d => d.id === driverId);
+
+      return found ? found.name : "Chofer";
+
+    });
+
+    historyList.innerHTML += `
+      <div class="glass rounded-3xl p-5">
+
+        <div class="flex items-start justify-between gap-4">
+
+          <div>
+
+            <h3 class="font-bold text-xl capitalize">
+              ${formatDate(item.date)}
+            </h3>
+
+            <p class="text-slate-400 text-sm mt-1">
+              Registro de domingo
+            </p>
+
+          </div>
+
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4 mt-5">
+
+          ${names.map(name => `
+
+            <div
+              class="bg-slate-900/50 border border-white/5 rounded-2xl p-4"
+            >
+
+              <div class="flex items-center gap-4">
+
+                <div
+                  class="w-12 h-12 rounded-2xl bg-blue-500/20 flex items-center justify-center font-bold text-blue-300"
+                >
+                  ${getInitials(name)}
+                </div>
+
+                <div>
+
+                  <h4 class="font-semibold text-lg">
+                    ${name}
+                  </h4>
+
+                  <p class="text-slate-400 text-sm">
+                    8 horas trabajadas
+                  </p>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          `).join("")}
+
+        </div>
+
+      </div>
+    `;
+
+  });
+
+}
+
+function renderStats(search = ""){
+
+  driversGrid.innerHTML = "";
+
+  const filtered =
+  drivers.filter(driver => {
+
+    const text =
+    `${driver.id} ${driver.name}`
+    .toLowerCase();
+
+    return text.includes(
+      search.toLowerCase()
+    );
+
+  });
+
+  filtered.forEach(driver => {
+
+    const worked =
+    sundays.filter(s =>
+      s.drivers.includes(driver.id)
+    );
+
+    const totalWorked =
+    worked.length;
+
+    const hours =
+    totalWorked * 8;
+
+    const percentage =
+    sundays.length
+    ? Math.round((totalWorked / sundays.length) * 100)
+    : 0;
+
+    const lastDate =
+    worked[0]?.date || null;
+
+    const missingWeeks =
+    calculateMissingWeeks(lastDate);
+
+    driversGrid.innerHTML += `
+      <div
+        class="glass rounded-2xl p-5 card-hover driver-item"
+      >
+
+        <div class="flex items-center justify-between mb-5">
+
+          <div>
+
+            <h3 class="text-lg font-bold">
+              ${driver.name}
+            </h3>
+
+            <p class="text-slate-400 text-sm mt-1">
+              ID ${driver.id}
+            </p>
+
+          </div>
+
+          <div
+            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center text-xl font-bold text-blue-300"
+          >
+            ${totalWorked}
+          </div>
+
+        </div>
+
+        <div class="space-y-3 text-sm">
+
+          <div class="flex justify-between">
+
+            <span class="text-slate-400">
+              Servicios
+            </span>
+
+            <span class="font-semibold">
+              ${totalWorked}
+            </span>
+
+          </div>
+
+          <div class="flex justify-between">
+
+            <span class="text-slate-400">
+              Horas
+            </span>
+
+            <span class="font-semibold">
+              ${hours}h
+            </span>
+
+          </div>
+
+          <div class="flex justify-between">
+
+            <span class="text-slate-400">
+              Participación
+            </span>
+
+            <span class="font-semibold">
+              ${percentage}%
+            </span>
+
+          </div>
+
+          <div class="flex justify-between">
+
+            <span class="text-slate-400">
+              Última vez
+            </span>
+
+            <span class="font-semibold">
+              ${missingWeeks}
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+  });
+
+  totalDrivers.textContent =
+  drivers.length;
+
+  totalSundays.textContent =
+  sundays.length;
+
+  totalHours.textContent =
+  `${sundays.length * 16}h`;
+
+}
+
+function renderRecommendations(){
+
+  recommendations.innerHTML = "";
+
+  const ranked = drivers
+  .map(driver => {
+
+    const worked =
+    sundays.filter(s =>
+      s.drivers.includes(driver.id)
+    );
+
+    const totalWorked =
+    worked.length;
+
+    const percentage =
+    sundays.length
+    ? Math.round((totalWorked / sundays.length) * 100)
+    : 0;
+
+    const lastDate =
+    worked[0]?.date || null;
+
+    const missing =
+    getMissingWeeksNumber(lastDate);
+
+    let score = 0;
+
+    score += missing * 10;
+    score += (100 - percentage);
+
+    return {
+      driver:driver.name,
+      percentage,
+      missing,
+      score,
+      hours: totalWorked * 8
+    };
+
+  })
+  .sort((a,b)=>b.score-a.score)
+  .slice(0,2);
+
+  ranked.forEach(item => {
+
+    recommendations.innerHTML += `
+      <div
+        class="glass card-hover rounded-2xl p-5"
+      >
+
+        <div class="flex items-center justify-between mb-5">
+
+          <div>
+
+            <h3 class="text-xl font-bold">
+              ${item.driver}
+            </h3>
+
+            <p class="text-slate-400 text-sm">
+              Recomendación automática
+            </p>
+
+          </div>
+
+          <div
+            class="w-14 h-14 rounded-2xl bg-blue-500/20 flex items-center justify-center text-xl font-bold text-blue-300"
+          >
+            ${item.missing}
+          </div>
+
+        </div>
+
+        <div class="space-y-3 text-sm">
+
+          <div class="flex justify-between">
+
+            <span class="text-slate-400">
+              Sin venir
+            </span>
+
+            <span class="font-semibold">
+              ${item.missing} domingos
+            </span>
+
+          </div>
+
+          <div class="flex justify-between">
+
+            <span class="text-slate-400">
+              Participación
+            </span>
+
+            <span class="font-semibold">
+              ${item.percentage}%
+            </span>
+
+          </div>
+
+          <div class="flex justify-between">
+
+            <span class="text-slate-400">
+              Horas
+            </span>
+
+            <span class="font-semibold">
+              ${item.hours}h
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+    `;
+
+  });
+
+}
+
+function renderAlerts(){
+
+  alertsList.innerHTML = "";
+
+  drivers.forEach(driver => {
+
+    const worked =
+    sundays.filter(s =>
+      s.drivers.includes(driver.id)
+    );
+
+    const missing =
+    getMissingWeeksNumber(
+      worked[0]?.date
+    );
+
+    if(missing >= 4){
+
+      alertsList.innerHTML += `
+        <div
+          class="bg-yellow-500/10 border border-yellow-500/20 rounded-2xl p-4"
+        >
+
+          <p class="font-semibold text-yellow-300">
+            ${driver.name} no viene hace ${missing} domingos
+          </p>
+
+        </div>
+      `;
+
+    }
+
+  });
+
+}
+
+function getInitials(name){
+
+  return name
+  .split(" ")
+  .map(n=>n[0])
+  .join("")
+  .substring(0,2);
+
+}
+
+function formatDate(dateString){
+
+  const date = new Date(dateString);
+
+  return date.toLocaleDateString("es-AR",{
+    weekday:"long",
+    day:"numeric",
+    month:"long"
+  });
+
+}
+
+function calculateMissingWeeks(lastDate){
+
+  if(!lastDate){
+    return "Nunca vino";
+  }
+
+  const weeks =
+  getMissingWeeksNumber(lastDate);
+
+  return `Hace ${weeks} domingos`;
+
+}
+
+function getMissingWeeksNumber(lastDate){
+
+  if(!lastDate){
+    return sundays.length;
+  }
+
+  const ordered =
+  sundays.map(s=>s.date);
+
+  const index =
+  ordered.indexOf(lastDate);
+
+  return index;
+
+}
+
+</script>
+
+<script>
+
+if("serviceWorker" in navigator){
+
+  navigator.serviceWorker
+  .register("service-worker.js");
+
+}
+
+</script>
+
+</body>
+</html>
