@@ -260,3 +260,38 @@ select{
     background:#b91c1c;
 
 }
+.modal-large{
+
+    max-width:900px;
+
+}
+
+#driverSearch{
+
+    width:100%;
+
+    margin-bottom:20px;
+
+}
+
+.driver-row{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+    padding:12px;
+
+    border-bottom:1px solid var(--border);
+
+    cursor:pointer;
+
+}
+
+.driver-row:hover{
+
+    background:#0f172a;
+
+}
