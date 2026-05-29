@@ -1,50 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Control de Domingos</title>
-
 <link rel="stylesheet" href="css/styles.css">
-
 </head>
-
 <body>
-
 <div class="container">
-
-    <header>
-
+<header class="topbar">
+    <div>
         <h1>Control de Domingos</h1>
-
-        <div class="actions">
-
-            <button id="btnNewSunday">
-                Nuevo Domingo
-            </button>
-
-            <button id="btnDrivers">
-                Ver Choferes
-            </button>
-
-        </div>
-
-    </header>
-
-    <section id="metrics"></section>
-
-    <section id="recommendations"></section>
-
-    <section id="history"></section>
-
-    <section id="alerts"></section>
-
+        <p>Sistema de asignación y seguimiento</p>
+    </div>
+    <div class="actions">
+        <button id="btnNewSunday" class="btn-primary">
+            Nuevo Domingo
+        </button>
+        <button id="btnDrivers" class="btn-secondary">
+            Choferes
+        </button>
+    </div>
+</header>
+<section class="metrics">
+    <div class="card metric-card">
+        <span>Choferes</span>
+        <h2 id="totalDrivers">0</h2>
+    </div>
+    <div class="card metric-card">
+        <span>Domingos</span>
+        <h2 id="totalSundays">0</h2>
+    </div>
+    <div class="card metric-card">
+        <span>Horas</span>
+        <h2 id="totalHours">0</h2>
+    </div>
+    <div class="card metric-card">
+        <span>Alertas</span>
+        <h2 id="totalAlerts">0</h2>
+    </div>
+</section>
+<section class="card">
+    <div class="section-header">
+        <h2>Recomendados</h2>
+    </div>
+    <div id="recommendations">
+        Sin datos todavía
+    </div>
+</section>
+<section class="card">
+    <div class="section-header">
+        <h2>Historial</h2>
+    </div>
+    <div id="historyList">
+        No hay registros todavía
+    </div>
+</section>
+<section class="card">
+    <div class="section-header">
+        <h2>Alertas</h2>
+    </div>
+    <div id="alertsList">
+        Sin alertas
+    </div>
+</section>
 </div>
-
 <script src="js/data.js"></script>
 <script src="js/app.js"></script>
-
 </body>
 </html>
