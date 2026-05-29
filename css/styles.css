@@ -137,14 +137,17 @@ margin-bottom:15px;
 .modal{
 
     position:fixed;
-
     inset:0;
 
     background:rgba(0,0,0,.75);
 
     display:flex;
     justify-content:center;
-    align-items:center;
+    align-items:flex-start;
+
+    overflow-y:auto;
+
+    padding:20px;
 
     z-index:1000;
 
@@ -160,6 +163,10 @@ margin-bottom:15px;
 
     width:100%;
     max-width:500px;
+
+    max-height:90vh;
+
+    overflow-y:auto;
 
     background:var(--card);
 
@@ -296,19 +303,10 @@ select{
 
 }
 
-.modal{
+#driversList{
 
-    position: fixed;
-    inset: 0;
+    max-height:60vh;
 
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-
-    overflow-y: auto;
-
-    padding: 30px 15px;
-
-    z-index: 1000;
+    overflow-y:auto;
 
 }
