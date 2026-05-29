@@ -354,4 +354,161 @@ function formatDate(dateString){
     );
 
 }
+const driversModal =
+document.getElementById(
+"driversModal"
+);
+
+const btnDrivers =
+document.getElementById(
+"btnDrivers"
+);
+
+const closeDriversModal =
+document.getElementById(
+"closeDriversModal"
+);
+
+const driversList =
+document.getElementById(
+"driversList"
+);
+
+const driverSearch =
+document.getElementById(
+"driverSearch"
+);
+
+
+btnDrivers.addEventListener(
+"click",
+()=>{
+
+    driversModal.classList.remove(
+    "hidden"
+    );
+
+    renderDrivers();
+
+}
+);
+
+closeDriversModal.addEventListener(
+"click",
+()=>{
+
+    driversModal.classList.add(
+    "hidden"
+    );
+
+}
+);
+
+driverSearch.addEventListener(
+"input",
+renderDrivers
+);
+
+function renderDrivers(){
+
+    const search =
+    driverSearch.value
+    .toLowerCase();
+
+    driversList.innerHTML = "";
+
+    const filtered =
+    drivers.filter(driver => {
+
+        return (
+        driver.name
+        .toLowerCase()
+        .includes(search)
+        );
+
+    });
+
+    filtered.forEach(driver => {
+
+        const worked =
+        sundays.filter(
+        s =>
+        s.drivers.includes(driver.id)
+        );
+
+        const hours =
+        worked.length * 8;
+
+        driversList.innerHTML += `
+
+        <div
+            class="driver-row"
+            onclick="showDriverStats(${driver.id})"
+        >
+
+            <div>
+
+                <strong>
+                    ${driver.name}
+                </strong>
+
+                <br>
+
+                ID ${driver.id}
+
+            </div>
+
+            <div>
+
+                ${worked.length}
+                domingos
+
+            </div>
+
+        </div>
+
+        `;
+
+    });
+
+}
+function showDriverStats(id){
+
+    const driver =
+    drivers.find(
+      d => d.id === id
+    );
+
+    const worked =
+    sundays.filter(
+      s => s.drivers.includes(id)
+    );
+
+    const hours =
+    worked.length * 8;
+
+    const lastDate =
+    worked.length
+    ? worked[0].date
+    : null;
+
+    alert(
+
+`Chofer:
+${driver.name}
+
+ID:
+${driver.id}
+
+Domingos:
+${worked.length}
+
+Horas:
+${hours}
+
+Última participación:
+${lastDate || "Nunca"}`
+);
+
+}
 
