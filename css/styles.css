@@ -212,3 +212,51 @@ select{
     width:100%;
 
 }
+.history-card{
+
+    background:#0f172a;
+
+    border:1px solid var(--border);
+
+    border-radius:12px;
+
+    padding:16px;
+
+    margin-bottom:12px;
+
+}
+
+.history-top{
+
+    display:flex;
+
+    justify-content:
+    space-between;
+
+    align-items:center;
+
+    margin-bottom:10px;
+
+}
+
+.delete-btn{
+
+    background:#dc2626;
+
+    color:white;
+
+    border:none;
+
+    padding:8px 12px;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+}
+
+.delete-btn:hover{
+
+    background:#b91c1c;
+
+}
