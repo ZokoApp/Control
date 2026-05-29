@@ -295,3 +295,20 @@ select{
     background:#0f172a;
 
 }
+
+.modal{
+
+    position: fixed;
+    inset: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+
+    overflow-y: auto;
+
+    padding: 30px 15px;
+
+    z-index: 1000;
+
+}
