@@ -229,3 +229,129 @@ function saveNewSunday(){
     );
 
 }
+renderHistory();
+
+function renderHistory(){
+
+    const history =
+    document.getElementById(
+        "historyList"
+    );
+
+    history.innerHTML = "";
+
+    if(sundays.length === 0){
+
+        history.innerHTML = `
+        <p>No hay domingos cargados.</p>
+        `;
+
+        return;
+    }
+
+    const ordered =
+    [...sundays]
+    .sort(
+      (a,b)=>
+      new Date(b.date) -
+      new Date(a.date)
+    );
+
+    ordered.forEach(item=>{
+
+        const names =
+        item.drivers.map(id=>{
+
+            const driver =
+            drivers.find(
+                d => d.id === id
+            );
+
+            return driver
+            ? driver.name
+            : "Chofer";
+
+        });
+
+        history.innerHTML += `
+
+        <div class="history-card">
+
+            <div class="history-top">
+
+                <h3>
+                    ${formatDate(item.date)}
+                </h3>
+
+                <button
+                    onclick="deleteSunday('${item.date}')"
+                    class="delete-btn"
+                >
+                    Eliminar
+                </button>
+
+            </div>
+
+            <p>${names[0]}</p>
+            <p>${names[1]}</p>
+
+        </div>
+
+        `;
+
+    });
+
+}
+function deleteSunday(date){
+
+    const confirmDelete =
+    confirm(
+      "¿Eliminar este domingo?"
+    );
+
+    if(!confirmDelete){
+        return;
+    }
+
+    const updated =
+    sundays.filter(
+      s => s.date !== date
+    );
+
+    localStorage.setItem(
+      "sundays",
+      JSON.stringify(updated)
+    );
+
+    location.reload();
+
+}
+
+function formatDate(dateString){
+
+    const [
+      year,
+      month,
+      day
+    ] =
+    dateString.split("-");
+
+    const date =
+    new Date(
+      year,
+      month - 1,
+      day
+    );
+
+    return date.toLocaleDateString(
+      "es-AR",
+      {
+        weekday:"long",
+        day:"numeric",
+        month:"long",
+        year:"numeric"
+      }
+    );
+
+}
+
